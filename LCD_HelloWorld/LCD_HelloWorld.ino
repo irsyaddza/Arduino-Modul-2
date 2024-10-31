@@ -11,5 +11,5 @@ lcd.setCursor(2,0);
  lcd.print("Tombol 1");
 }
 
-void loop() 
+void loop() {
 }
