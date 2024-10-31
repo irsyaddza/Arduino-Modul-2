@@ -8,7 +8,7 @@ lcd.init();
 lcd.clear();
 lcd.backlight(); 
 lcd.setCursor(2,0); 
- lcd.print("Tombol 1");
+ lcd.print("Hello World");
 }
 
 void loop() {
