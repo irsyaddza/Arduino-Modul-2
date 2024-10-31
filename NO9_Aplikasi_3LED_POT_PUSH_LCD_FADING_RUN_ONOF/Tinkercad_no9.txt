@@ -1,0 +1,130 @@
+#include <Adafruit_LiquidCrystal.h>
+
+Adafruit_LiquidCrystal lcd(0);
+
+int LED1 = 11;
+int LED2 = 10;
+int LED3 = 9;
+int pot = A0;
+int tombol1 = 7;
+int tombol2 = 6;
+int tombol3 = 5;
+
+int mode = 0; // 
+int tempo = 1000; 
+
+void setup() {
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(tombol1, INPUT_PULLUP);
+  pinMode(tombol2, INPUT_PULLUP);
+  pinMode(tombol3, INPUT_PULLUP);
+  pinMode(pot, INPUT);
+  
+  lcd.begin(16, 2);
+  lcd.setBacklight(LOW);
+  lcd.home();
+  lcd.setCursor(3, 0);
+  lcd.print("D3TK-47-02");
+  delay(3000);
+  lcd.clear();
+  displayMenu();
+}
+
+void loop() {
+  if (digitalRead(tombol1) == LOW) {
+    mode = 0;
+    while (digitalRead(tombol1) == LOW) {}
+    displayMenu();
+  }
+  if (digitalRead(tombol2) == LOW) {
+    mode = 1;
+    while (digitalRead(tombol2) == LOW) {}
+    displayMenu();
+  }
+  if (digitalRead(tombol3) == LOW) {
+    mode = 2;
+    while (digitalRead(tombol3) == LOW) {}
+    displayMenu();
+  }
+
+  tempo = map(analogRead(pot), 0, 1023, 100, 2000);
+
+  switch (mode) {
+    case 0:
+      onOffMode();
+      break;
+    case 1:
+      fadingMode();
+      break;
+    case 2:
+      runningMode();
+      break;
+  }
+}
+
+void displayMenu() {
+  lcd.clear();
+  switch (mode) {
+    case 0:
+      lcd.setCursor(5, 0);
+      lcd.print("ON/OFF");
+      break;
+    case 1:
+      lcd.setCursor(5, 0);
+      lcd.print("FADING");
+      break;
+    case 2:
+      lcd.setCursor(5, 0);
+      lcd.print("RUNNING");
+      break;
+  }
+}
+
+void onOffMode() {
+  digitalWrite(LED1, HIGH);
+  digitalWrite(LED2, HIGH);
+  digitalWrite(LED3, HIGH);
+  delay(tempo);
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+  delay(tempo);
+}
+
+void fadingMode() {
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(LED1, i);
+    analogWrite(LED2, i);
+    analogWrite(LED3, i);
+    delay(tempo / 255);
+  }
+  for (int i = 255; i >= 0; i--) {
+    analogWrite(LED1, i);
+    analogWrite(LED2, i);
+    analogWrite(LED3, i);
+    delay(tempo / 255);
+  }
+}
+
+void runningMode() {
+  for (int i=255; i>=0; i-=5){  
+	analogWrite(LED1,i);
+  analogWrite(LED1,i);
+ 	analogWrite(LED1,i);  
+  delay(tempo / 255);    
+ }
+ for (int i=255; i>=0; i-=5){  
+	analogWrite(LED2,i);
+  analogWrite(LED2,i);
+ 	analogWrite(LED2,i);  
+  delay(tempo / 255);    
+ }
+ for (int i=255; i>=0; i-=5){  
+	analogWrite(LED3,i);
+  analogWrite(LED3,i);
+ 	analogWrite(LED3,i);  
+  delay(tempo / 255);
+}
+}
