@@ -1,14 +1,12 @@
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x27,16,2); 
+#include <Adafruit_LiquidCrystal.h>
 
-
-void setup() 
-{
-lcd.init();
-lcd.clear();
-lcd.backlight(); 
-lcd.setCursor(2,0); 
- lcd.print("Hello World");
+Adafruit_LiquidCrystal lcd(0);
+void setup() {
+  
+  lcd.begin(16, 2);
+  lcd.setBacklight(HIGH);
+  lcd.setCursor(3, 0);
+  lcd.print("HELLO WORLD");
 }
 
 void loop() {
